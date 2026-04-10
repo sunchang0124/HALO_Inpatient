@@ -5,10 +5,7 @@ idToLab = pickle.load(open('discretized_data/idToLab.pkl', 'rb'))
 isCategorical = pickle.load(open('discretized_data/isCategorical.pkl', 'rb'))
 discretization = pickle.load(open('discretized_data/discretization.pkl', 'rb'))
 possibleValues = pickle.load(open('discretized_data/possibleValues.pkl', 'rb'))
-discretization = pickle.load(open('discretized_data/discretization.pkl', 'rb'))
 formatMap = pickle.load(open('discretized_data/formatMap.pkl', 'rb'))
-idToLabel = pickle.load(open('discretized_data/idToLabel.pkl', 'rb'))
-indexToCode = pickle.load(open('discretized_data/indexToCode.pkl', 'rb'))
 
 dataset = pickle.load(open('results/datasets/haloDataset.pkl', 'rb'))
 
@@ -30,7 +27,7 @@ for p in dataset:
     contType = 'Hours' if new_labs != [] else 'Age' if firstVisit else 'Days'
     if contType == 'Age':
       firstVisit = False
-    new_cont = formatCont(random.uniform(discretization[contType][v[4][-1]], discretization[contType][v[4][-1]+1]), contType)
+    new_cont = formatCont(random.uniform(discretization[contType][v[3][-1]], discretization[contType][v[3][-1]+1]), contType)
     new_visits.append((v[0], new_labs, new_values, [new_cont]))
   p['visits'] = new_visits
 

@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score
 
 config = HALOConfig()
-train_ehr_dataset = pickle.load(open(f'./data/trainDataset.pkl', 'rb'))
-halo_ehr_dataset = pickle.load(open(f'./results/datasets/haloDataset_converted.pkl', 'rb'))
+train_ehr_dataset = pickle.load(open(f'./discretized_data/trainDataset.pkl', 'rb'))
+halo_ehr_dataset = pickle.load(open(f'./results/datasets/haloDataset.pkl', 'rb'))
 
 for p in train_ehr_dataset:
   new_visits = []
@@ -110,6 +110,8 @@ def generate_plots(stats1, stats2, label1, label2, types=["Per Record Code Proba
             probs1 = data1[t]
             probs2 = data2[t]
             keys = set(probs1.keys()).union(set(probs2.keys()))
+            if not keys:
+                continue
             values1 = [probs1[k] if k in probs1 else 0 for k in keys]
             values2 = [probs2[k] if k in probs2 else 0 for k in keys]
 
@@ -238,12 +240,13 @@ X = np.expand_dims(np.array(labs['Train']['Values']), 1)
 y = np.expand_dims(np.array(labs['HALO']['Values']), 1)
 r2 = r2_score(y, X)
 plt.scatter(X, y, c='black', label=f"HALO ({r2:.3f})", marker='x')
-plt.xlim(0, max([max(y), max(X)]))
+maxLabVal = float(max(np.max(y), np.max(X)))
+plt.xlim(0, maxLabVal)
 plt.xlabel('Real Lab Value')
-plt.ylim(0, max([max(y), max(X)]))
+plt.ylim(0, maxLabVal)
 plt.ylabel('HALO Lab Value')
 plt.title('Average Lab Values')
-plt.plot([0,max([max(y), max(X)])], [0,max([max(y), max(X)])], 'k-', zorder=0)
+plt.plot([0, maxLabVal], [0, maxLabVal], 'k-', zorder=0)
 plt.legend()
 plt.savefig(f'results/dataset_stats/plots/lab_values.png')
 

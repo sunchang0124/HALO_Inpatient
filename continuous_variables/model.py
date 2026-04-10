@@ -198,16 +198,16 @@ class HALOModel(nn.Module):
         sig = nn.Sigmoid()
         code_probs = sig(code_logits)
 
-        if ehr_labels is not None:    
+        if ehr_labels is not None:
             shift_labels = ehr_labels[..., 1:, :].contiguous()
             if ehr_masks is not None:
                 code_probs = code_probs * ehr_masks
                 shift_labels = shift_labels * ehr_masks
 
-            bce = nn.BCELoss()
-            loss = bce(code_probs, shift_labels)
+            bce = nn.BCEWithLogitsLoss()
+            loss = bce(code_logits.float(), shift_labels.float())
             return loss, code_probs, shift_labels
-        
+
         return code_probs
 
     def sample(self, input_visits, random=True):

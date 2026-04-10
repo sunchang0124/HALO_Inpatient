@@ -7,11 +7,11 @@
 class HALOConfig(object):
     def __init__(
             self,
-            total_vocab_size=14487,
+            total_vocab_size=14447,
             code_vocab_size=14167,
             lab_vocab_size=237,
             continuous_vocab_size=15,
-            label_vocab_size=65,
+            label_vocab_size=25,
             special_vocab_size=3,
 
             categorical_lab_vocab_size=47,
